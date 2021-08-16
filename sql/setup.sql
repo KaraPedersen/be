@@ -7,6 +7,7 @@ CREATE TABLE users (
 );
 CREATE TABLE characters (
   character_id INT NOT NULL,
+  user_id BIGINT NOT NULL,
   name TEXT NOT NULL,
   status TEXT NOT NULL,
   location TEXT NOT NULL,
