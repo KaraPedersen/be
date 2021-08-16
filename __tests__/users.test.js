@@ -18,4 +18,18 @@ describe('user auth routes', () => {
 
     expect(body).toEqual({ username: 'Azlynn', userId: '1' });
   });
+
+  test('logs a user in who signed up', async () => {
+    const { body } = await request(app)
+      .post('/api/auth/login')
+      .send(user);
+
+    expect(body).toEqual({ username: 'Azlynn', userId: '1' });
+
+    const newReq = await request(app)
+      .post('/api/auth/login')
+      .send({ username: 'Azlynn', password: 'dog' });
+
+    expect(newReq.text).toEqual('Invalid username or password');
+  });
 });
