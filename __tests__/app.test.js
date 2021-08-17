@@ -87,4 +87,16 @@ describe('demo routes', () => {
       
     expect(body).toEqual(rick);
   });
+
+  test('deletes a user favorite character', async () => {
+    const { body } = await request(app)
+      .delete(`/characters/user/${rick.characterId}/${user.userId}`);
+
+    expect(body).toEqual(rick);
+
+    const getReq = await request(app)
+      .get(`/characters/user/${user.userId}`);
+
+    expect(getReq.body).toEqual([]);
+  });
 });
