@@ -10,6 +10,6 @@ CREATE TABLE characters (
   user_id BIGINT NOT NULL,
   name TEXT NOT NULL,
   status TEXT NOT NULL,
-  location TEXT NOT NULL,
+  location JSON NOT NULL,
   image TEXT NOT NULL
 )

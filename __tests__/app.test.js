@@ -9,6 +9,8 @@ describe('demo routes', () => {
     password: 'password'
   };
 
+  let rick;
+
   beforeAll(() => {
     return setup(pool)
       .then(() => 
@@ -33,7 +35,7 @@ describe('demo routes', () => {
       'gender': 'Male',
       'origin': {
         'name': 'Earth (C-137)',
-        'url': 'https://rickandMortyapi.com/api/location/1'
+        'url': 'https://rickandmortyapi.com/api/location/1'
       },
       'location': {
         'name': 'Earth(Replacement Dimension)',
@@ -54,9 +56,35 @@ describe('demo routes', () => {
       userId: '1',
       name: 'Rick Sanchez',
       status: 'Alive',
-      location: '{"name":"Earth(Replacement Dimension)","url":"https://rickandmortyapi.com/api/location/20"}',
-      image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg'
+      location: { name:'Earth(Replacement Dimension)',
+        url:'https://rickandmortyapi.com/api/location/20' },
+      image:'https://rickandmortyapi.com/api/character/avatar/1.jpeg'
     });
 
+    rick = body;
+  });
+
+  test('gets all of a users favorite characters', async () => {
+    const { body } = await request(app)
+      .get(`/characters/user/${user.userId}`);
+
+    expect(body).toEqual(expect.arrayContaining([{
+      characterId: 1,
+      userId: '1',
+      name: 'Rick Sanchez',
+      status: 'Alive',
+      location: { name:'Earth(Replacement Dimension)', url:'https://rickandmortyapi.com/api/location/20' },        
+      image: 'https://rickandmortyapi.com/api/character/avatar/1.jpeg'
+    }]));
+  });
+
+  test('updates user character', async () => {
+    rick.status = 'DEAD';
+    const { body } = await request(app)
+    
+      .put(`/characters/user/${rick.characterId}/${user.userId}`)
+      .send(rick);
+      
+    expect(body).toEqual(rick);
   });
 });
